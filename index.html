@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Music Player</title>
+    <style>
+        div{
+            outline: 1px split #fff;
+        }
+        .main {
+            height: 450px;
+        }
+        .main-lrc {
+            height: 450px;
+            width: 550px;
+            float: right;
+            border: 1px solid #333;
+        }
+        .m-player {
+            width: 900px;
+            height: 47px;
+            left: 50%;
+            margin: 0 auto;
+            background-color: #333;
+        }
+        .btns {
+            width: 137px;
+            margin: 0px 18px 0 30px;
+            /* outline: solid 1px #ccc; */
+            height: 47px;
+            background-color: #333;
+            float: left;
+            border-right: none;
+        }
+        #id-music-pre{
+            background-position: 0 -130px;
+        }
+        #id-music-pre:hover{
+            background-position: -30px -130px;
+        }
+        .btns #id-audio-player {
+            background-position: 0 -204px;
+            width: 36px;
+            height: 36px;
+            margin-top: 5.5px;
+        }
+        .m-player .btns #id-audio-player:hover {
+            background-position: -40px -204px;
+        }
+        .m-player .btns .state-pause {
+            background-position: 0px -204px !important;
+        }
+        .m-player .btns .state-pause:hover {
+            background-position: -40px -204px !important;
+        }
+        .m-player .btns .state-play {
+            background-position: 0px -165px !important;
+        }
+        .m-player .btns .state-play:hover {
+            background-position: -40px -165px !important;
+        }
+        #id-music-next {
+            background-position: -80px -130px;
+        }
+        #id-music-next:hover {
+            background-position: -110px -130px;
+        }
+        .btns a{
+            background: url('./images/playbar.png') no-repeat  0 9999px;
+            text-indent: -9999px;
+            display: block;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            float: left;
+            margin-top: 8.5px;
+            margin-right: 8px;
+
+        }
+        .m-pbar {
+            width: 493px;
+            /* line-height: 200px; */
+            /* vertical-align: center; */
+            /* margin: 0 auto; */
+            margin-top: 19px;
+        }
+        .play {
+            position: relative;
+            width: 493px;
+            float: left;
+        }
+        .barbg {
+            width: 493px;
+            height: 9px;
+            /*  background 要放在 position 前面*/
+            background: url('./images/statbar.png') no-repeat  0 9999px;
+            background-position: right 0;
+        }
+        .cur {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 9px;
+            background: url('./images/statbar.png') no-repeat  0 9999px;
+            background-position: left -66px;
+            margin-top: 19px;
+        }
+        .cur span {
+            background: url('./images/iconall.png') no-repeat;
+            background-position: 0 -250px;
+            width: 22px;
+            height: 24px;
+            display: inline-block;
+            position: absolute;
+            top: -7px;
+            right: -13px;
+            cursor: pointer;
+        }
+
+        .cur span i {
+            visibility: hidden;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: url('./images/loading.gif');
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        .music-time {
+            display: block;
+            float: left;
+            margin: 13px 0 0 25px;
+            color: white;
+        }
+        .volume {
+            display: block;
+            width: 80px;
+            float: right;
+            height: 47px;
+        }
+        .volume a {
+            display: block;
+            background: url("./images/playbar.png") no-repeat 0 9999px;
+            background-position: -2px -248px;
+            width: 25px;
+            height: 25px;
+            text-indent: -9999px;
+            margin-top: 11px;
+        }
+         .vol-bar {
+            background: url('./images/playbar.png') no-repeat 0 9999px;
+            background-position: 0 -503px;
+            width: 32px;
+            height: 113px;
+            /* transform: rotate(-90deg); */
+            position: relative;
+            top: -149px;
+        }
+        #vol-icon {
+            background: url('./images/iconall.png') no-repeat 0 9999px;
+            background-position: -40px -250px;
+            width: 18px;
+            height: 20px;
+            display: block;
+            position: absolute;
+            left: 7px;
+            top: 95px;
+            cursor: pointer;
+        }
+        .vbg {
+          position: absolute;
+          width: 4px;
+          /* top: auto; */
+          bottom: 8px;
+          left: 14px;
+          height: 95px;
+        }
+        .vol-cur {
+            background: url('./images/playbar.png') no-repeat 0 9999px;
+            background-position: -40px bottom;
+            position: absolute;
+            width: 4px;
+            /* top: auto; */
+            bottom: 8px;
+            left: 14px;
+            /* height: 93px; */
+        }
+    </style>
+  </head>
+  <body>
+      <div class="">
+          <div class="main">
+              <div class="main-lrc">
+                  <section>
+
+                  </section>
+                  <section>
+                      <div class="lrc">
+
+                      </div>
+                  </section>
+              </div>
+          </div>
+
+          <div class="m-player">
+            <div class="btns">
+                <a id="id-music-pre" title=" 上一首"> </a>
+                <a id="id-audio-player" title="播放/暂停"></a>
+                <a id="id-music-next" title="下一首"></a>
+            </div>
+            <div class="play">
+                <div class="words">
+
+                </div>
+                <div class="m-pbar">
+                    <div class="rdy">
+
+                    </div>
+                    <div class="m-pbar">
+                        <div class="barbg">
+                            <div class="rdy" style="width:0%;">
+                                <!-- rdy -->
+                            </div>
+                            <div class="cur" style="width:0%">
+                                <span class="z-load" id="auto-id">
+                                    <i></i>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- <span class="music-time">时间</span> -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="music-time">
+                <span id="cur-time">00:00</span>
+                <span id="all-time">00:00</span>
+            </div>
+            <div class="volume">
+                <span>
+                    <a href=""></a>
+                </span>
+                <div class="vol-bar">
+                    <div class="vbg">
+
+                    </div>
+                    <div class="vol-cur">
+
+                    </div>
+                    <span id="vol-icon"></span>
+                </div>
+            </div>
+            <div class="">
+
+            </div>
+          </div>
+          <audio id="id-audio-content" data-state="0" >
+            <source src="./src/1.mp3">
+          </audio>
+      </div>
+    <script>
+    /*
+    1, 控制条
+        播放、暂停、切歌(图标要对上，暂停切歌时需要播放并切换图标)
+        播放进度
+            1, 播放条自动滑动
+            2, 鼠标拖拉控制进度
+                  点下   获取当前值
+                  移动  计算移动值 + 原进度, 并移动
+                  松开  移除移动事件
+            3, 鼠标点击控制进取
+        音乐与进度条关联
+            1, 播放歌曲进度条自动滚动
+            2, 移动进度条播放能正常
+                第一个 bug (移动进度条放开后进度条弹回原处)
+
+        播放时间
+            当前时间
+                timeupdate 中格式绑定
+            总时间
+                bug 切歌的时 总时间会瞬间出现 NaN
+                (绑定在页面中代码放置位置有待确定)
+        音量控制
+
+    2, 歌词滚动
+
+    3, 搜索歌曲 (爬虫)(ajax) 跨域
+    4,
+    */
+
+      var musicSource = [
+        '1.mp3',
+        '2.mp3',
+        '3.mp3',
+        '4.mp3',
+      ]
+      // var ad
+      var pre = document.querySelector('#id-music-pre')
+      var next = document.querySelector('#id-music-next')
+      var audio = document.querySelector('#id-audio-content')
+      var findMusicIndex = function(str) {
+          for (let i = 0; i < musicSource.length; i++) {
+              if(str == musicSource[i]) {
+                  return i
+              }
+          }
+          return -1
+      }
+
+      // 播放音乐
+      var musicPlayer = function() {
+        var audio = document.querySelector('#id-audio-player')
+        var play = document.querySelector('#id-audio-content')
+        audio.addEventListener('click', function(e) {
+            var play = document.querySelector('#id-audio-content')
+            var stateValue = play.dataset.state
+            var state = Number(stateValue)
+            console.log('state', state)
+            if(!state) {
+                console.log('play')
+                play.play()
+                play.dataset.state = '1'
+                // audio.background.position = '0 -165px'
+                audio.classList.remove('state-pause')
+                audio.classList.add('state-play')
+            } else {
+                console.log('pause')
+                play.pause()
+                play.dataset.state = '0'
+                audio.classList.remove('state-play')
+                audio.classList.add('state-pause')
+                // audio.background.position = '0 -204px'
+            }
+        })
+      }
+      // 前一首
+      pre.addEventListener('click', function(e) {
+          var src = document.querySelector('source')
+          var musicSrc = src.src
+          var musicName = musicSrc.split('/')[7]
+          console.log(musicName)
+          var indexNow = findMusicIndex(musicName)
+          var index = (indexNow - 1 + 4) % 4
+          // console.log('index', indexNow, index, musicName)
+          var path = './src/' + musicSource[index]
+          src.src = path
+          console.log(audio)
+          audio.load()
+          audio.play()
+          var play = document.querySelector('#id-audio-content')
+          play.dataset.state = '1'
+          var content = document.querySelector('#id-audio-player')
+          content.classList.add('state-play')
+          // console.log(path)
+      })
+      // 下一首
+      var nextEvent = function (){
+          next.addEventListener('click', function(e) {
+              var src = document.querySelector('source')
+              var musicSrc = src.src
+              var musicName = musicSrc.split('/')[7]
+              console.log(musicName)
+              var indexNow = findMusicIndex(musicName)
+              var index = (indexNow + 1) % 4
+              // console.log('index', indexNow, index, musicName)
+              var path = './src/' + musicSource[index]
+              src.src = path
+              console.log(audio)
+              audio.load()
+              audio.play()
+              // console.log(path)
+              // span_allTime(audio.duration)
+              var play = document.querySelector('#id-audio-content')
+              play.dataset.state = '1'
+              var content = document.querySelector('#id-audio-player')
+              content.classList.add('state-play')
+              // 总时间
+              // span_allTime(audio.duration)
+         })
+      }
+      // 播放结束自动切歌
+     audio.addEventListener('ended', function() {
+         var src = document.querySelector('source')
+         var musicSrc = src.src
+         var musicName = musicSrc.split('/')[7]
+         console.log(musicName)
+         var indexNow = findMusicIndex(musicName)
+         var index = (indexNow + 1) % 4
+         // console.log('index', indexNow, index, musicName)
+         var path = './src/' + musicSource[index]
+         src.src = path
+         console.log(audio)
+         audio.load()
+         audio.play()
+         var play = document.querySelector('#id-audio-content')
+         play.dataset.state = '1'
+         //总时间
+         // span_allTime(audio.duration)
+     }, false)
+     // 歌曲播放时进度条移动
+     audio.addEventListener('timeupdate', function() {
+         // console.log(audio.duration)
+         var preces = (audio.currentTime / audio.duration) * 100
+         // console.log('preces', preces)
+         //这里出错了  不用 .cur 宽度来改变进度条 应该用 currentTime 改变
+         var div_cur = document.querySelector('.cur')
+         div_cur.style.width = `${preces}%`
+         var fTime = formTime(audio.currentTime)
+         var time_span = document.querySelector('#cur-time')
+         time_span.innerHTML = fTime
+         // thisTime = audio.currentTime
+         // 切歌 bug 解决
+         var allTheTime = audio.duration || 0
+         span_allTime(allTheTime)
+     })
+
+     // 点击  控制播放进度
+     var process_div = document.querySelector('.barbg')
+     var play_now = function() {
+         // var process_div = document.querySelector('.cur')
+         var process_cur = document.querySelector('.cur')
+         process_div.addEventListener('click', function(event) {
+
+               // var x = event.pageX || event.clientX + scrollX;
+             // console.log("process_div click", event.offsetX/493)
+             // offsetX 相对于父元素 x 距离  // TODO: WHY
+             // var press = (event.offsetX/493)*100
+             var boxLeft = this.getBoundingClientRect()
+             var press = ((event.clientX - boxLeft.left) / 493) * 100
+             // var press =  event.offsetX
+             console.log("process_div cur---click", press)
+             process_cur.style.width= `${press}%`
+             audio.currentTime = audio.duration * press * 0.01
+         })
+
+     }
+
+
+     // var process_move = document.querySelector('#auto-id')
+     // var last_offX = 0
+     // process_move.addEventListener('mouseover', function() {
+     //     var process_cur = document.querySelector('.cur')
+     //     var now_offX = process_cur.style.width
+     //     console.log('cur width', now_offX)
+     //     console.log('拖动了',event.offsetX)
+     //     var press = event.offsetX + last_offX
+     //     // ((event.offsetX-last_offX)/493)*100
+     //     last_offX = event.offsetX
+     //      process_cur.style.width= `${press}px`
+     // })
+     // 鼠标滑动控制音量
+     var allTime = 0
+     var startPosition = 0
+     var curPostion = 0
+     var process_bar = document.querySelector('#barbg')
+     var process_move = document.querySelector('#auto-id')
+     var start = 0
+     var prassCur = document.querySelector('.cur')
+     // 移动进度条执行事物
+     var listen = function(e) {
+         // if(!this.isDragging) return
+         // console.log('this.isDragging', this.isDragging
+
+         var now = ((e.clientX - start) / 493)* 100
+         now = now + passC
+         now = Math.min(now, 100)
+         // console.log('e.clcient', typeof(e.clientX), typeof(passC), typeof(start))
+         prassCur.style.width =`${now}%`
+         curPostion = audio.duration * now * 0.01
+         // console.log('audio.cuurentime', curPostion)
+         // console.log('mousemove', e.clientX)
+         // console.log('now1', now, typeof(now))
+         // console.log('passC', passC)
+         // console.log('pass+now', now+passC)
+     }
+     // 开始移动进度条执行事物
+     var dragst = function(clientx, prassCur, start) {
+         var now = ((clientx - start) / 493)* 100
+         prassCur.style.width =`${now}%`
+     }
+     // 获取播放进度
+     var passCur = function() {
+         var prassCur = document.querySelector('.cur')
+         var startCur = prassCur.style.width
+         var startNow = startCur.slice(0, startCur.length - 1)
+         // startNow = startNow.parseFloat(startNow)
+         var startNum = (parseFloat(startNow) / 100) * 493
+         // console.log('startNow', typeof(startNow))
+         return parseFloat(startNow)
+     }
+     // 移动结束执行事物
+     var dragen = function() {
+         // console.log('mouseup',e.clientX)
+         // 获取当前 div 的宽度 算出百分比
+         // 把进度条跟播放时间绑定
+         var proc_now = document.querySelector('.cur')
+         var start_nows = proc_now.style.width
+         // var startNow = start_nows.slice(0, start_nows.length - 1)
+         // 更改播放时间
+         // console.log('audio.currentTime',  audio.currentTime, typeof( audio.currentTime))
+         // console.log('start_nows', start_nows* 0.01 * audio.duration)
+         console.log('dragend curPostion', curPostion)
+         // this.isDragging = false
+         audio.currentTime = curPostion
+         var prec11 = curPostion / audio.duration
+         console.log('prec11', prec11)
+         var prec1 = prec11 * 100
+         proc_now.style.width = `${prec1}%`
+         // thisTime = curPostion
+
+         // console.log('startNow, currentTime', startNow, audio.currentTime)
+         // console.log('currentTime', audio.currentTime)
+         // console.log('startNow', startNow)
+         // startNow = startNow.parseFloat(startNow)
+         // var startNum = (parseFloat(startNow) / 100) * 493
+         document.removeEventListener('mousemove', listen)
+         document.removeEventListener('mouseup', dragen)
+         console.log('mouseUp')
+     }
+     var passC = 0
+     this.isDragging = false
+     // 拖动控制 播放进度
+     var dragEvent = function(){
+       process_move.addEventListener('mousedown', function(e) {
+           // var event = e.target
+           // console.log('mousedown', e.clientX)
+           // this.isDragging = false
+           // start = e.clientX
+           // var startPosition = passCur()
+           // allTime = audio.currentTime
+           // 阻止事件传播
+           e.stopPropagation()
+           // this.isDragging = true
+           start = e.clientX
+           console.log('mousedown eclienx', e.clientX)
+           passC = passCur()
+           var prassCur = document.querySelector('.cur')
+           document.addEventListener('mousemove', listen)
+           document.addEventListener('mouseup', dragen)
+       })
+     }
+
+     //格式化时间
+     var formTime = function(time) {
+         var min = parseInt(time / 60)
+         var second
+         if(time > 60) {
+             second =parseInt((time % 60))
+         } else {
+             second = parseInt(time)
+         }
+         var formSecond
+         if(second < 10) {
+             formSecond = `0${second}`
+         } else {
+             formSecond = `${second}`
+         }
+         return `0${min}:${formSecond}`
+     }
+     //总时间
+     var span_allTime = function(time) {
+         var span = document.querySelector('#all-time')
+         var allFormTime = formTime(time)
+         console.log('allTime', audio.duration)
+         span.innerHTML= allFormTime
+     }
+
+     //音量控制
+     var vol_cur_proces = document.querySelector('.vol-cur')
+     var vol_span = document.querySelector('#vol-icon')
+     var startNowY = 0
+     var vol_proces = 0
+     var vol_icon_now = 0
+     var top_all = 95
+     var process_all = 0
+     var vol_drag = function(e) {
+         console.log('drag move',startNowY - e.clientY)
+         var nowMove = startNowY - e.clientY
+         var movePx = top_all - nowMove
+         console.log('movePx  nowMove', movePx, nowMove)
+         // top_all = movePx
+         var theP = vol_proces + nowMove
+         // var theP = process_all + nowMove
+         // var theI = vol_icon_now - nowMove
+         console.log('vol_proces vol_now',vol_proces, vol_icon_now)
+         if(nowMove > 0){
+             movePx = Math.max(movePx, 0)
+             theP = Math.min(theP, 95)
+         } else {
+             movePx = Math.min(movePx, 95)
+             theP = Math.max(theP, 0)
+         }
+         console.log('------movePx------', movePx)
+         vol_cur_proces.style.height = `${theP}px`
+         vol_span.style.top = movePx + 'px'
+         // startNowY = e.clientY
+     }
+     var vol_dragend = function() {
+         var vol_top = vol_span.style.top
+         top_all = parseInt(vol_top.slice(0, -2)) | 0
+         var vol_height = vol_cur_proces.style.height
+         process_all = parseInt(vol_height.slice(0, -2)) | 0
+         vol_span.removeEventListener('mousemove', vol_drag)
+         vol_span.removeEventListener('mouseup', vol_dragend)
+     }
+     vol_span.addEventListener('mousedown', function(e) {
+         // body...
+         var startY = e.clientY
+         startNowY = startY
+        console.log('vol mousedown', e.clientY)
+        var vol_height = vol_cur_proces.style.height
+        vol_proces = parseInt(vol_height.slice(0, -2)) | 0
+
+        var vol_top = vol_span.style.top
+        vol_icon_now = parseInt(vol_top.slice(0, -2)) | 0
+        console.log('vol proc  now', vol_proces,vol_icon_now)
+        vol_span.addEventListener('mousemove',vol_drag)
+        vol_span.addEventListener('mouseup', vol_dragend)
+     })
+
+     // 点击控制音量
+     // 可能需要事件捕获
+     // var vol_click = document.querySelector('.vbg')
+     // vol_click.addEventListener('click', function(e){
+     //     console.log('vol_click', e.offsetY)
+     //     var paNow = 95 - e.offsetY
+     //     vol_cur_proces.style.height = paNow + 'px'
+     //     vol_span.style.top = e.offsetY + 'px'
+     // }, false)
+     //
+
+     // process_move.addEventListener('onmousedown', function(e) {
+     //     console.log('can move')
+     //     // process_move.style.draggable = true
+     // })
+     // process_move.addEventListener('onmousemove', function(e) {
+     //     console.log('move')
+     // })
+     // process_move.addEventListener('onmousedup', function(e) {
+     //     console.log('up')
+     // })
+     // 程序入口
+      var __main = function() {
+        musicPlayer()
+        nextEvent()
+        play_now()
+        dragEvent()
+      }
+      __main()
+    </script>
+  </body>
+</html>
