@@ -778,6 +778,7 @@
          let Collect = tool.formatLrc()
          var timeCollect = Collect[0]
          var lyricCollect = Collect[1]
+         let lyricScrollHeight = divLyric.scrollHeight
          for (let i = 0; i < timeCollect.length; i++) {
              if(toSecond(timeCollect[i]) - audio.currentTime <= 0.1) {
 
@@ -787,6 +788,7 @@
                   // 首先获取节点，然后给节点加 on 类
                  currentLine = theLyric[i]
                  //移动滚动条
+                 divLyric.scrollTop = currentLine.offsetTop - currentLine.offsetHeight * 7
                  // 获取 p 元素再添加类
                  console.log('currentLine', currentLine, typeof(currentLine))
                  addClass(currentLine, 'on')
@@ -820,7 +822,7 @@
         var uijm = ''
         var geci = ''
         [uijm, geci] = tool.formatLrc()
-        tool.showlyric('',geci[1])
+        // tool.showlyric('',geci[1])
         // console.log('bbt', geci)
       }
       __main()
