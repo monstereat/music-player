@@ -14,8 +14,17 @@
         .main-lrc {
             height: 450px;
             width: 550px;
-            float: right;
+            /* float: right; */
+            margin: 0 auto;
             border: 1px solid #333;
+        }
+        .lrc {
+            height: 350px;
+            text-align: center;
+            overflow: auto;
+        }
+        .on {
+            color: blue;
         }
         .m-player {
             width: 900px;
@@ -192,7 +201,7 @@
   <body>
       <div class="">
           <div class="main">
-              <!-- <div class="main-lrc">
+              <div class="main-lrc">
                   <section>
 
                   </section>
@@ -201,7 +210,7 @@
 
                       </div>
                   </section>
-              </div> -->
+              </div>
           </div>
 
           <div class="m-player">
@@ -253,14 +262,15 @@
                 </div>
             </div>
             <div class="">
-
             </div>
           </div>
           <audio id="id-audio-content" data-state="0" >
             <source src="./src/1.mp3">
           </audio>
       </div>
+     <script src="./tools.js"></script>
     <script>
+
     /*
     1, 控制条
         播放、暂停、切歌(图标要对上，暂停切歌时需要播放并切换图标)
@@ -285,6 +295,15 @@
         音量控制
 
     2, 歌词滚动
+        歌词显示
+            获取歌词
+            对歌词进行分解(时间、歌词各一个数组)
+            根据歌词在页面生成歌词列表
+        歌词绑定
+            点击播放 歌词能正确显示当前歌词(添加 class) 歌词开始  歌词结束能正确显示
+            暂停 歌词滚动能暂停
+            拖放歌词滚动条后放开回到原来的位置
+        切歌
 
     3, 搜索歌曲 (爬虫)(ajax) 跨域
     4,
@@ -414,6 +433,14 @@
          // 切歌 bug 解决
          var allTheTime = audio.duration || 0
          span_allTime(allTheTime)
+
+         // 绑定歌词
+         // let timeCollect = tool.formatLrc()
+         // var timeCollects = timeCollect[1]
+         // for (let i = 0; i < timeCollect.length; i++) {
+         //
+         // }
+         tool.bindLyric()
      })
 
      // 点击  控制播放进度
@@ -559,6 +586,13 @@
          }
          return `0${min}:${formSecond}`
      }
+     var toSecond = function(time) {
+         let minStr = time.slice(0,2)
+         let secondStr = time.slice(3)
+         let min = parseInt(minStr)
+         let second = parseInt(secondStr)
+         return min*60 + second
+     }
      //总时间
      var span_allTime = function(time) {
          var span = document.querySelector('#all-time')
@@ -630,6 +664,140 @@
      //     vol_span.style.top = e.offsetY + 'px'
      // }, false)
      //
+     var tool = {
+
+     }
+     tool.lyric = function() {
+         let lrc = '[00:16.445]如何面对曾一起走过的日子\
+         [00:23.420]现在剩下我独行如何用心声一一讲你知\
+         [00:30.116]从来没人明白我唯一你给我好日子\
+         [00:37.315]有你有我有情有生有死有义\
+         [00:43.395]多少风波都愿闯只因彼此不死的目光\
+         [00:50.890]有你有我有情有天有海有地\
+         [00:57.540]不可猜测总有天意才珍惜相处的日子\
+         [01:04.650]道别话亦未多讲只抛低这个伤心的汉子\
+         [01:18.843]沉沉睡了谁分享今生的日子\
+         [01:25.775]活着但是没灵魂才明白生死之间的意思\
+         [01:32.733]情浓完全明白了才甘心披上孤独衣\
+         [01:39.663]有你有我有情有天有海有地\
+         [01:46.637]当天一起不自知分开方知根本心极痴\
+         [01:53.542]有你有我有情有生有死有义\
+         [02:00.512]只想解释当我不智如今想倾诉讲谁知\
+         [02:07.468]剩下绝望旧身影今只得千亿伤心的句子\
+         [02:20.225]沉沉睡了谁分享今生的日子\
+         [02:26.862]活着但是没灵魂才明白生死之间的意思\
+         [02:33.821]情浓完全明白了才甘心披上孤独衣\
+         [02:41.109]有你有我有情有天有海有地\
+         [02:47.976]当天一起不自知分开方知根本心极痴\
+         [02:54.946]有你有我有情有生有死有义\
+         [03:01.961]只想解释当我不智如今想倾诉讲谁知\
+         [03:08.561]剩下绝望旧身影今只得千亿伤心的句子\
+         [03:14.566]剩下绝望旧身影今只得千亿伤心的句子\
+         '
+         return lrc
+     }
+
+     // 时间 歌词分割
+     tool.formatLrc = function() {
+         let lyricTimes = []
+         let lyrics = []
+         let temp = []
+         let lyric = null
+         let copyLyric = null
+         let timeRegex = /\[\d+:\d+\.\d+\]/g
+         let lyricRegex = /[^\[\d+:\d+\.\d+\]]/g
+         let regex = /\[/g
+
+         copyLyric = lyric = tool.lyric()
+         // 把时间都替换成 '_', 再用 split 把字符串分割成字符串数组
+         copyLyric = copyLyric.replace(timeRegex, '_').split('_')
+         // split() 把字符串分割成字符数组
+         lyric = lyric.replace(lyricRegex, '').replace(regex, '').split(']');
+         copyLyric.forEach(function(item) {
+             if(item) {
+                 lyrics.push(item.trim())
+             }
+         })
+         lyric.forEach((item)=> {
+             if(item) {
+                 lyricTimes.push(item.trim())
+             }
+         })
+         console.log('lyrics + lyricTimes', lyrics,lyricTimes)
+         return [lyricTimes, lyrics]
+     }
+
+     // 歌词显示在界面
+     var divLyric = document.querySelector('.lrc')
+     tool.showlyric = function(ele, lyrics) {
+         var parentNode = []
+         var eleNode = create('p', lyrics.length)
+         for (let i = 0; i < lyrics.length; i++) {
+            eleNode[i].innerHTML = lyrics[i]
+            // appendHtml(divLyric, `<p>${lyrics[i]}</p>`)
+            // parentNode.push(`<p>${lyrics[i]}</p>`)
+         }
+         for (let i = 0; i < eleNode.length; i++) {
+             // body...
+             // divLyric.appendHtml('beforeend', eleNode[i])
+             divLyric.appendChild(eleNode[i])
+         }
+         return eleNode
+     }
+
+     // 绑定歌词  timeupdate 中
+     var removeClass = function(element, className) {
+         if(!element || !className) {
+             return
+         }
+         element.classList.remove(className)
+     }
+     var addClass = function(element, className) {
+         if(!element) {
+             return
+         }
+         element.className = className
+     }
+     var create = function(eleType,length) {
+         if(!eleType || !length) {
+             return
+         }
+         var eleNode = []
+         for (let i = 0; i < length; i++) {
+             eleNode.push(document.createElement(eleType))
+         }
+         return eleNode
+     }
+     var currentLine = null
+     let Collect = tool.formatLrc()
+     var timeCollect = Collect[0]
+     var lyricCollect = Collect[1]
+     var theLyric = tool.showlyric(divLyric, lyricCollect)
+     console.log('theLyric', theLyric)
+     tool.bindLyric = function() {
+         let Collect = tool.formatLrc()
+         var timeCollect = Collect[0]
+         var lyricCollect = Collect[1]
+         for (let i = 0; i < timeCollect.length; i++) {
+             if(toSecond(timeCollect[i]) - audio.currentTime <= 0.1) {
+
+                 removeClass(currentLine, 'on')
+                  console.log(' removeClass',i)
+                  // 这里卡住了
+                  // 首先获取节点，然后给节点加 on 类
+                 currentLine = theLyric[i]
+                 //移动滚动条
+                 // 获取 p 元素再添加类
+                 console.log('currentLine', currentLine, typeof(currentLine))
+                 addClass(currentLine, 'on')
+             }
+         }
+         if(timeCollect.length === 0) {
+             removeClass(currentLine, on)
+         }
+     }
+
+
 
      // process_move.addEventListener('onmousedown', function(e) {
      //     console.log('can move')
@@ -647,6 +815,13 @@
         nextEvent()
         play_now()
         dragEvent()
+
+        tool.formatLrc()
+        var uijm = ''
+        var geci = ''
+        [uijm, geci] = tool.formatLrc()
+        tool.showlyric('',geci[1])
+        // console.log('bbt', geci)
       }
       __main()
     </script>
