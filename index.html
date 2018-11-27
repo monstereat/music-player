@@ -590,7 +590,7 @@
          let minStr = time.slice(0,2)
          let secondStr = time.slice(3)
          let min = parseInt(minStr)
-         let second = parseInt(secondStr)
+         let second = parseFloat(secondStr)
          return min*60 + second
      }
      //总时间
@@ -609,10 +609,15 @@
      var vol_icon_now = 0
      var top_all = 95
      var process_all = 0
+     audio.volume = 0.5
+     var vol_i = 47.5
+     var vol_h = 47.5
+     vol_cur_proces.style.height = 47.5 + 'px'
+     vol_span.style.top = 47.5 + 'px'
      var vol_drag = function(e) {
          console.log('drag move',startNowY - e.clientY)
          var nowMove = startNowY - e.clientY
-         var movePx = top_all - nowMove
+         var movePx = top_all - nowMove - vol_i
          console.log('movePx  nowMove', movePx, nowMove)
          // top_all = movePx
          var theP = vol_proces + nowMove
@@ -636,6 +641,14 @@
          top_all = parseInt(vol_top.slice(0, -2)) | 0
          var vol_height = vol_cur_proces.style.height
          process_all = parseInt(vol_height.slice(0, -2)) | 0
+         vol_i = 0
+         var nowDiv = document.querySelector('.vol-cur')
+         let nowDivHeight = nowDiv.style.height
+         let nowDivStr = nowDivHeight.slice(0,-2)
+         let vol_value = parseInt(nowDivStr)
+         let vol_precent = vol_value / 95
+         console.log('vol_precent', vol_precent)
+         audio.volume = vol_precent
          vol_span.removeEventListener('mousemove', vol_drag)
          vol_span.removeEventListener('mouseup', vol_dragend)
      }
@@ -839,10 +852,10 @@
          var lyricCollect = Collect[1]
          let lyricScrollHeight = divLyric.scrollHeight
          for (let i = 0; i < timeCollect.length; i++) {
-             if(toSecond(timeCollect[i]) - audio.currentTime <= 0.1) {
+             if(toSecond(timeCollect[i]) - audio.currentTime <= 0.01) {
 
                  removeClass(currentLine, 'on')
-                  console.log(' removeClass',i)
+                  console.log(' removeClass',toSecond(timeCollect[i]))
                   // 这里卡住了
                   // 首先获取节点，然后给节点加 on 类
                  currentLine = theLyric[i]
