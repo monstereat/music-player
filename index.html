@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>Music Player</title>
-    <style>
+    <!-- <style>
         div{
             outline: 1px split #fff;
         }
@@ -14,7 +13,6 @@
         .main-lrc {
             height: 450px;
             width: 550px;
-            /* float: right; */
             margin: 0 auto;
             border: 1px solid #333;
         }
@@ -173,18 +171,22 @@
             width: 18px;
             height: 20px;
             display: block;
-            position: absolute;
-            left: 7px;
+            position: relative;
+            left: -7px;
             top: 95px;
             cursor: pointer;
+            /* opacity: 1; */
         }
         .vbg {
-          position: absolute;
+          position: relative;
           width: 4px;
           /* top: auto; */
-          bottom: 8px;
+          bottom: -8px;
           left: 14px;
           height: 95px;
+          margin: 0px;
+          /* z-index: -100; */
+          /* opacity: 0; */
         }
         .vol-cur {
             background: url('./images/playbar.png') no-repeat 0 9999px;
@@ -192,75 +194,64 @@
             position: absolute;
             width: 4px;
             /* top: auto; */
-            bottom: 8px;
-            left: 14px;
-            /* height: 93px; */
+            bottom: 0px;
+            /* opacity: 1; */
         }
-    </style>
+    </style> -->
+    <link rel="stylesheet" href="./index.css">
   </head>
   <body>
-      <div class="">
-          <div class="main">
-              <div class="main-lrc">
-                  <section>
+    <div class="">
+      <div class="main">
+        <div class="main-lrc">
+          <section>
+            </section>
+            <section>
+              <div class="lrc"></div>
+            </section>
+        </div>
+      </div>
 
-                  </section>
-                  <section>
-                      <div class="lrc">
-
-                      </div>
-                  </section>
-              </div>
-          </div>
-
-          <div class="m-player">
-            <div class="btns">
-                <a id="id-music-pre" title=" 上一首"> </a>
-                <a id="id-audio-player" title="播放/暂停"></a>
-                <a id="id-music-next" title="下一首"></a>
-            </div>
-            <div class="play">
-                <div class="words">
-
-                </div>
-                <div class="m-pbar">
-                    <div class="rdy">
-
-                    </div>
-                    <div class="m-pbar">
-                        <div class="barbg">
-                            <div class="rdy" style="width:0%;">
+      <div class="m-player">
+        <div class="btns">
+          <a id="id-music-pre" title=" 上一首"> </a>
+          <a id="id-audio-player" title="播放/暂停"></a>
+          <a id="id-music-next" title="下一首"></a>
+        </div>
+          <div class="play">
+            <div class="words"></div>
+              <div class="m-pbar">
+                <div class="rdy"></div>
+                  <div class="m-pbar">
+                    <div class="barbg">
+                      <div class="rdy" style="width:0%;">
                                 <!-- rdy -->
-                            </div>
-                            <div class="cur" style="width:0%">
-                                <span class="z-load" id="auto-id">
-                                    <i></i>
-                                </span>
-                            </div>
-                        </div>
+                      </div>
+                      <div class="cur" style="width:0%">
+                        <span class="z-load" id="auto-id">
+                          <i></i>
+                        </span>
+                      </div>
+                    </div>
                         <!-- <span class="music-time">时间</span> -->
                     </div>
-                </div>
-
+              </div>
+          </div>
+          <div class="music-time">
+            <span id="cur-time">00:00</span>
+            <span id="all-time">00:00</span>
+          </div>
+          <div class="volume">
+            <span>
+              <a href=""></a>
+            </span>
+            <div class="vol-bar">
+              <div class="vbg">
+                <div class="vol-cur"> </div>
+                <span id="vol-icon"></span>
+              </div>
             </div>
-            <div class="music-time">
-                <span id="cur-time">00:00</span>
-                <span id="all-time">00:00</span>
-            </div>
-            <div class="volume">
-                <span>
-                    <a href=""></a>
-                </span>
-                <div class="vol-bar">
-                    <div class="vbg">
-
-                    </div>
-                    <div class="vol-cur">
-
-                    </div>
-                    <span id="vol-icon"></span>
-                </div>
-            </div>
+          </div>
             <div class="">
             </div>
           </div>
@@ -269,7 +260,7 @@
           </audio>
       </div>
      <script src="./tools.js"></script>
-    <script>
+    <!-- <script>
 
     /*
     1, 控制条
@@ -336,16 +327,16 @@
             var play = document.querySelector('#id-audio-content')
             var stateValue = play.dataset.state
             var state = Number(stateValue)
-            console.log('state', state)
+            // console.log('state', state)
             if(!state) {
-                console.log('play')
+                // console.log('play')
                 play.play()
                 play.dataset.state = '1'
                 // audio.background.position = '0 -165px'
                 audio.classList.remove('state-pause')
                 audio.classList.add('state-play')
             } else {
-                console.log('pause')
+                // console.log('pause')
                 play.pause()
                 play.dataset.state = '0'
                 audio.classList.remove('state-play')
@@ -359,13 +350,13 @@
           var src = document.querySelector('source')
           var musicSrc = src.src
           var musicName = musicSrc.split('/')[7]
-          console.log(musicName)
+          // console.log(musicName)
           var indexNow = findMusicIndex(musicName)
           var index = (indexNow - 1 + 4) % 4
           // console.log('index', indexNow, index, musicName)
           var path = './src/' + musicSource[index]
           src.src = path
-          console.log(audio)
+          // console.log(audio)
           audio.load()
           audio.play()
           var play = document.querySelector('#id-audio-content')
@@ -380,13 +371,13 @@
               var src = document.querySelector('source')
               var musicSrc = src.src
               var musicName = musicSrc.split('/')[7]
-              console.log(musicName)
+              // console.log(musicName)
               var indexNow = findMusicIndex(musicName)
               var index = (indexNow + 1) % 4
               // console.log('index', indexNow, index, musicName)
               var path = './src/' + musicSource[index]
               src.src = path
-              console.log(audio)
+              // console.log(audio)
               audio.load()
               audio.play()
               // console.log(path)
@@ -404,13 +395,13 @@
          var src = document.querySelector('source')
          var musicSrc = src.src
          var musicName = musicSrc.split('/')[7]
-         console.log(musicName)
+         // console.log(musicName)
          var indexNow = findMusicIndex(musicName)
          var index = (indexNow + 1) % 4
          // console.log('index', indexNow, index, musicName)
          var path = './src/' + musicSource[index]
          src.src = path
-         console.log(audio)
+         // console.log(audio)
          audio.load()
          audio.play()
          var play = document.querySelector('#id-audio-content')
@@ -424,8 +415,12 @@
          var preces = (audio.currentTime / audio.duration) * 100
          // console.log('preces', preces)
          //这里出错了  不用 .cur 宽度来改变进度条 应该用 currentTime 改变
-         var div_cur = document.querySelector('.cur')
-         div_cur.style.width = `${preces}%`
+         if(!isDragging){
+           var div_cur = document.querySelector('.cur')
+           div_cur.style.width = `${preces}%`
+         }
+         // var div_cur = document.querySelector('.cur')
+         // div_cur.style.width = `${preces}%`
          var fTime = formTime(audio.currentTime)
          var time_span = document.querySelector('#cur-time')
          time_span.innerHTML = fTime
@@ -457,14 +452,14 @@
              var boxLeft = this.getBoundingClientRect()
              var press = ((event.clientX - boxLeft.left) / 493) * 100
              // var press =  event.offsetX
-             console.log("process_div cur---click", press)
+             // console.log("process_div cur---click", press)
              process_cur.style.width= `${press}%`
              audio.currentTime = audio.duration * press * 0.01
          })
 
      }
 
-
+     var isDragging = false;
      // var process_move = document.querySelector('#auto-id')
      // var last_offX = 0
      // process_move.addEventListener('mouseover', function() {
@@ -487,9 +482,10 @@
      var prassCur = document.querySelector('.cur')
      // 移动进度条执行事物
      var listen = function(e) {
-         // if(!this.isDragging) return
+       console.log('this.')
+         if(!isDragging) return
          // console.log('this.isDragging', this.isDragging
-
+         console.log('movemove')
          var now = ((e.clientX - start) / 493)* 100
          now = now + passC
          now = Math.min(now, 100)
@@ -528,15 +524,16 @@
          // 更改播放时间
          // console.log('audio.currentTime',  audio.currentTime, typeof( audio.currentTime))
          // console.log('start_nows', start_nows* 0.01 * audio.duration)
-         console.log('dragend curPostion', curPostion)
+         // console.log('dragend curPostion', curPostion)
          // this.isDragging = false
-         audio.currentTime = curPostion
-         var prec11 = curPostion / audio.duration
-         console.log('prec11', prec11)
-         var prec1 = prec11 * 100
-         proc_now.style.width = `${prec1}%`
-         // thisTime = curPostion
 
+         // var prec11 = curPostion / audio.duration
+         // // console.log('prec11', prec11)
+         // var prec1 = prec11 * 100
+         // proc_now.style.width = `${prec1}%`
+         // thisTime = curPostion
+         audio.currentTime = curPostion
+         isDragging = false
          // console.log('startNow, currentTime', startNow, audio.currentTime)
          // console.log('currentTime', audio.currentTime)
          // console.log('startNow', startNow)
@@ -547,7 +544,6 @@
          console.log('mouseUp')
      }
      var passC = 0
-     this.isDragging = false
      // 拖动控制 播放进度
      var dragEvent = function(){
        process_move.addEventListener('mousedown', function(e) {
@@ -559,7 +555,7 @@
            // allTime = audio.currentTime
            // 阻止事件传播
            e.stopPropagation()
-           // this.isDragging = true
+           isDragging = true
            start = e.clientX
            console.log('mousedown eclienx', e.clientX)
            passC = passCur()
@@ -601,8 +597,10 @@
          span.innerHTML= allFormTime
      }
 
+     var isVol = false
      //音量控制
      var vol_cur_proces = document.querySelector('.vol-cur')
+     var volControl = document.querySelector('.val-bar')
      var vol_span = document.querySelector('#vol-icon')
      var startNowY = 0
      var vol_proces = 0
@@ -613,70 +611,104 @@
      var vol_i = 47.5
      var vol_h = 47.5
      vol_cur_proces.style.height = 47.5 + 'px'
-     vol_span.style.top = 47.5 + 'px'
+     vol_span.style.top = 47.5 - 10 + 'px'
      var vol_drag = function(e) {
-         console.log('drag move',startNowY - e.clientY)
+          if(!isVol) return
+          console.log(isVol)
+         // console.log('drag move',startNowY - e.clientY)
          var nowMove = startNowY - e.clientY
-         var movePx = top_all - nowMove - vol_i
+         console.log(e.clientY)
+         // var movePx = top_all - nowMove + vol_i + 9
          console.log('movePx  nowMove', movePx, nowMove)
          // top_all = movePx
          var theP = vol_proces + nowMove
+          var movePx = vol_icon_now - nowMove
          // var theP = process_all + nowMove
          // var theI = vol_icon_now - nowMove
-         console.log('vol_proces vol_now',vol_proces, vol_icon_now)
+         // console.log('vol_proces vol_now',vol_proces, vol_icon_now)
          if(nowMove > 0){
-             movePx = Math.max(movePx, 0)
+             movePx = Math.max(movePx, -10)
              theP = Math.min(theP, 95)
          } else {
-             movePx = Math.min(movePx, 95)
+             movePx = Math.min(movePx, 95 - 10)
              theP = Math.max(theP, 0)
          }
-         console.log('------movePx------', movePx)
+         // // console.log('------movePx------', movePx)
          vol_cur_proces.style.height = `${theP}px`
          vol_span.style.top = movePx + 'px'
-         // startNowY = e.clientY
+         vol_computer()
      }
      var vol_dragend = function() {
-         var vol_top = vol_span.style.top
-         top_all = parseInt(vol_top.slice(0, -2)) | 0
-         var vol_height = vol_cur_proces.style.height
-         process_all = parseInt(vol_height.slice(0, -2)) | 0
-         vol_i = 0
-         var nowDiv = document.querySelector('.vol-cur')
-         let nowDivHeight = nowDiv.style.height
-         let nowDivStr = nowDivHeight.slice(0,-2)
-         let vol_value = parseInt(nowDivStr)
-         let vol_precent = vol_value / 95
-         console.log('vol_precent', vol_precent)
-         audio.volume = vol_precent
+       // vol_cur_proces.style.height = `${theP}px`
+       // vol_span.style.top = movePx + 'px'
+         isVol = false
+         // var vol_top = vol_span.style.top
+         // top_all = parseInt(vol_top.slice(0, -2)) | 0
+         // var vol_height = vol_cur_proces.style.height
+         // process_all = parseInt(vol_height.slice(0, -2)) | 0
+         // vol_i = 0
+         // var nowDiv = document.querySelector('.vol-cur')
+         // let nowDivHeight = nowDiv.style.height
+         // let nowDivStr = nowDivHeight.slice(0,-2)
+         // let vol_value = parseInt(nowDivStr)
+         // let vol_precent = vol_value / 95
+         // // console.log('vol_precent', vol_precent)
+         // audio.volume = vol_precent
          vol_span.removeEventListener('mousemove', vol_drag)
          vol_span.removeEventListener('mouseup', vol_dragend)
      }
      vol_span.addEventListener('mousedown', function(e) {
          // body...
+         e.stopPropagation()
+         isVol = true
          var startY = e.clientY
          startNowY = startY
-        console.log('vol mousedown', e.clientY)
+        // console.log('vol mousedown', e.clientY)
         var vol_height = vol_cur_proces.style.height
-        vol_proces = parseInt(vol_height.slice(0, -2)) | 0
+        vol_proces = parseFloat(vol_height.slice(0, -2)) | 0
 
         var vol_top = vol_span.style.top
-        vol_icon_now = parseInt(vol_top.slice(0, -2)) | 0
+        vol_icon_now = parseFloat(vol_top.slice(0, -2)) | 0
         console.log('vol proc  now', vol_proces,vol_icon_now)
         vol_span.addEventListener('mousemove',vol_drag)
         vol_span.addEventListener('mouseup', vol_dragend)
      })
-
+     function vol_computer() {
+       var nowDiv = document.querySelector('.vol-cur')
+       let nowDivHeight = nowDiv.style.height
+       let nowDivStr = nowDivHeight.slice(0,-2)
+       let vol_value = parseInt(nowDivStr)
+       let vol_precent = vol_value / 95
+       // console.log('vol_precent', vol_precent)
+       audio.volume = vol_precent
+     }
      // 点击控制音量
      // 可能需要事件捕获
-     // var vol_click = document.querySelector('.vbg')
-     // vol_click.addEventListener('click', function(e){
-     //     console.log('vol_click', e.offsetY)
-     //     var paNow = 95 - e.offsetY
-     //     vol_cur_proces.style.height = paNow + 'px'
-     //     vol_span.style.top = e.offsetY + 'px'
-     // }, false)
-     //
+     var vol_click = document.querySelector('.vbg')
+     var volCurClick = document.querySelector('.vol-cur')
+     var contentBox = vol_click.getBoundingClientRect()
+     vol_click.addEventListener('click', function(e){
+        if(isVol) return
+         console.log('vol_click', e.clientY - parseFloat(vol_click.getBoundingClientRect().top) )
+         var iconHeight = e.clientY - contentBox.top
+         var paNow = 95 - iconHeight
+         vol_cur_proces.style.height = paNow + 'px'
+         vol_span.style.top = iconHeight - 10 + 'px'
+         vol_computer()
+         // console.log(e.target)
+     })
+     // volCurClick.addEventListener('click', function(e){
+     //   console.log('volCurClick', e.offsetY)
+     //   console.log(e.target)
+     //   var paNow = 95 - e.offsetY
+     //   var nowCurHeight = volCurClick.style.height
+     //   var nowCurlen = nowCurHeight.slice(0, nowCurHeight.length - 2)
+     //   console.log('现在' + nowCurlen)
+     //   let paNowCur = e.offsetY - parseFloat(nowCurlen)
+     //   vol_cur_proces.style.height = paNowCur + 'px'
+     //   vol_span.style.top = e.offsetY - 9 + 'px'
+     // })
+
      var tool = {
 
      }
@@ -795,7 +827,7 @@
                  lyricTimes.push(item.trim())
              }
          })
-         console.log('lyrics + lyricTimes', lyrics,lyricTimes)
+         // console.log('lyrics + lyricTimes', lyrics,lyricTimes)
          return [lyricTimes, lyrics]
      }
 
@@ -822,6 +854,7 @@
          if(!element || !className) {
              return
          }
+
          element.classList.remove(className)
      }
      var addClass = function(element, className) {
@@ -845,7 +878,7 @@
      var timeCollect = Collect[0]
      var lyricCollect = Collect[1]
      var theLyric = tool.showlyric(divLyric, lyricCollect)
-     console.log('theLyric', theLyric)
+     // console.log('theLyric', theLyric)
      tool.bindLyric = function() {
          let Collect = tool.formatLrc()
          var timeCollect = Collect[0]
@@ -855,14 +888,14 @@
              if(toSecond(timeCollect[i]) - audio.currentTime <= 0.01) {
 
                  removeClass(currentLine, 'on')
-                  console.log(' removeClass',toSecond(timeCollect[i]))
+                  // console.log(' removeClass',toSecond(timeCollect[i]))
                   // 这里卡住了
                   // 首先获取节点，然后给节点加 on 类
                  currentLine = theLyric[i]
                  //移动滚动条
                  divLyric.scrollTop = currentLine.offsetTop - currentLine.offsetHeight * 7
                  // 获取 p 元素再添加类
-                 console.log('currentLine', currentLine, typeof(currentLine))
+                 // console.log('currentLine', currentLine, typeof(currentLine))
                  addClass(currentLine, 'on')
              }
          }
@@ -894,10 +927,9 @@
         var uijm = ''
         var geci = ''
         [uijm, geci] = tool.formatLrc()
-        // tool.showlyric('',geci[1])
-        // console.log('bbt', geci)
       }
       __main()
-    </script>
+    </script> -->
+    <script src="./audioNow.js" charset="utf-8"></script>
   </body>
 </html>

@@ -1,0 +1,198 @@
+body{
+  background: #333;
+}
+div{
+    outline: 1px split #fff;
+}
+.main {
+    height: 450px;
+}
+.main-lrc {
+    height: 450px;
+    width: 550px;
+    margin: 0 auto;
+    border: 1px solid #333;
+}
+.lrc {
+    height: 350px;
+    text-align: center;
+    overflow: auto;
+    color: beige;
+}
+.on {
+    color: red;
+}
+.m-player {
+    width: 900px;
+    height: 47px;
+    left: 50%;
+    margin: 0 auto;
+    background-color: #333;
+}
+.btns {
+    width: 137px;
+    margin: 0px 18px 0 30px;
+    /* outline: solid 1px #ccc; */
+    height: 47px;
+    background-color: #333;
+    float: left;
+    border-right: none;
+}
+#id-music-pre{
+    background-position: 0 -130px;
+}
+#id-music-pre:hover{
+    background-position: -30px -130px;
+}
+.btns #id-audio-player {
+    background-position: 0 -204px;
+    width: 36px;
+    height: 36px;
+    margin-top: 5.5px;
+}
+.m-player .btns #id-audio-player:hover {
+    background-position: -40px -204px;
+}
+.m-player .btns .state-pause {
+    background-position: 0px -204px !important;
+}
+.m-player .btns .state-pause:hover {
+    background-position: -40px -204px !important;
+}
+.m-player .btns .state-play {
+    background-position: 0px -165px !important;
+}
+.m-player .btns .state-play:hover {
+    background-position: -40px -165px !important;
+}
+#id-music-next {
+    background-position: -80px -130px;
+}
+#id-music-next:hover {
+    background-position: -110px -130px;
+}
+.btns a{
+    background: url('./images/playbar.png') no-repeat  0 9999px;
+    text-indent: -9999px;
+    display: block;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    float: left;
+    margin-top: 8.5px;
+    margin-right: 8px;
+
+}
+.m-pbar {
+    width: 493px;
+    /* line-height: 200px; */
+    /* vertical-align: center; */
+    /* margin: 0 auto; */
+    margin-top: 19px;
+}
+.play {
+    position: relative;
+    width: 493px;
+    float: left;
+}
+.barbg {
+    width: 493px;
+    height: 9px;
+    /*  background 要放在 position 前面*/
+    background: url('./images/statbar.png') no-repeat  0 9999px;
+    background-position: right 0;
+}
+.cur {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 9px;
+    background: url('./images/statbar.png') no-repeat  0 9999px;
+    background-position: left -66px;
+    margin-top: 19px;
+}
+.cur span {
+    background: url('./images/iconall.png') no-repeat;
+    background-position: 0 -250px;
+    width: 22px;
+    height: 24px;
+    display: inline-block;
+    position: absolute;
+    top: -7px;
+    right: -13px;
+    cursor: pointer;
+}
+
+.cur span i {
+    visibility: hidden;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: url('./images/loading.gif');
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.music-time {
+    display: block;
+    float: left;
+    margin: 13px 0 0 25px;
+    color: white;
+}
+.volume {
+    display: block;
+    width: 80px;
+    float: right;
+    height: 47px;
+}
+.volume a {
+    display: block;
+    background: url("./images/playbar.png") no-repeat 0 9999px;
+    background-position: -2px -248px;
+    width: 25px;
+    height: 25px;
+    text-indent: -9999px;
+    margin-top: 11px;
+}
+ .vol-bar {
+    background: url('./images/playbar.png') no-repeat 0 9999px;
+    background-position: 0 -503px;
+    width: 32px;
+    height: 113px;
+    /* transform: rotate(-90deg); */
+    position: relative;
+    top: -149px;
+    background: #333;
+}
+#vol-icon {
+    background: url('./images/iconall.png') no-repeat 0 9999px;
+    background-position: -40px -250px;
+    width: 18px;
+    height: 20px;
+    display: block;
+    position: relative;
+    left: -7px;
+    top: 95px;
+    cursor: pointer;
+    /* opacity: 1; */
+}
+.vbg {
+  position: relative;
+  width: 4px;
+  /* top: auto; */
+  bottom: -8px;
+  left: 14px;
+  height: 95px;
+  margin: 0px;
+  /* z-index: -100; */
+  /* opacity: 0; */
+}
+.vol-cur {
+    background: url('./images/playbar.png') no-repeat 0 9999px;
+    background-position: -40px bottom;
+    position: absolute;
+    width: 4px;
+    /* top: auto; */
+    bottom: 0px;
+    /* opacity: 1; */
+}
